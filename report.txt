@@ -1,31 +1,36 @@
-when 1 threads run concurrency:
- task:1 read and write on average in 0 MilliSeconds. succeed to run: 17814 times
- task:2 read and write on average in 0 MilliSeconds. succeed to run: 24389 times
- task:3 read and write on average in 0 MilliSeconds. succeed to run: 23665 times
- task:4 read and write on average in 0 MilliSeconds. succeed to run: 24741 times
- task:5 read and write on average in 0 MilliSeconds. succeed to run: 24149 times
- when 2 threads run concurrency:
- task:1 read and write on average in 0 MilliSeconds. succeed to run: 17586 times
- task:2 read and write on average in 0 MilliSeconds. succeed to run: 17576 times
- task:3 read and write on average in 1 MilliSeconds. succeed to run: 14653 times
- task:4 read and write on average in 1 MilliSeconds. succeed to run: 14646 times
- task:5 read and write on average in 0 MilliSeconds. succeed to run: 15797 times
- when 3 threads run concurrency:
- task:1 read and write on average in 1 MilliSeconds. succeed to run: 11308 times
- task:2 read and write on average in 1 MilliSeconds. succeed to run: 11308 times
- task:3 read and write on average in 1 MilliSeconds. succeed to run: 11313 times
- task:4 read and write on average in 0 MilliSeconds. succeed to run: 16438 times
- task:5 read and write on average in 0 MilliSeconds. succeed to run: 16451 times
- when 4 threads run concurrency:
- task:1 read and write on average in 1 MilliSeconds. succeed to run: 13868 times
- task:2 read and write on average in 1 MilliSeconds. succeed to run: 13866 times
- task:3 read and write on average in 1 MilliSeconds. succeed to run: 13862 times
- task:4 read and write on average in 1 MilliSeconds. succeed to run: 13867 times
- task:5 read and write on average in 0 MilliSeconds. succeed to run: 25274 times
- when 5 threads run concurrency:
- task:1 read and write on average in 0 MilliSeconds. succeed to run: 15330 times
- task:2 read and write on average in 0 MilliSeconds. succeed to run: 15334 times
- task:3 read and write on average in 0 MilliSeconds. succeed to run: 15329 times
- task:4 read and write on average in 0 MilliSeconds. succeed to run: 15321 times
- task:5 read and write on average in 0 MilliSeconds. succeed to run: 15322 times
+when 1 threads run in parallel:
+ task:1 Average reading and writing time is 1 MilliSeconds. run: 685 times
+ task:2 Average reading and writing time is 1 MilliSeconds. run: 967 times
+ task:3 Average reading and writing time is 0 MilliSeconds. run: 1037 times
+ task:4 Average reading and writing time is 0 MilliSeconds. run: 1022 times
+ task:5 Average reading and writing time is 0 MilliSeconds. run: 1316 times
+ when 1 threads run in parallel:5027 times read and write succeed.
+ when 2 threads run in parallel:
+ task:1 Average reading and writing time is 0 MilliSeconds. run: 1126 times
+ task:2 Average reading and writing time is 0 MilliSeconds. run: 1126 times
+ task:3 Average reading and writing time is 0 MilliSeconds. run: 1279 times
+ task:4 Average reading and writing time is 0 MilliSeconds. run: 1279 times
+ task:5 Average reading and writing time is 0 MilliSeconds. run: 1545 times
+ when 2 threads run in parallel:6355 times read and write succeed.
+ when 3 threads run in parallel:
+ task:1 Average reading and writing time is 0 MilliSeconds. run: 1185 times
+ task:2 Average reading and writing time is 0 MilliSeconds. run: 1183 times
+ task:3 Average reading and writing time is 0 MilliSeconds. run: 1183 times
+ task:4 Average reading and writing time is 0 MilliSeconds. run: 1216 times
+ task:5 Average reading and writing time is 0 MilliSeconds. run: 1215 times
+ when 3 threads run in parallel:5982 times read and write succeed.
+ when 4 threads run in parallel:
+ task:1 Average reading and writing time is 0 MilliSeconds. run: 1177 times
+ task:2 Average reading and writing time is 0 MilliSeconds. run: 1181 times
+ task:3 Average reading and writing time is 0 MilliSeconds. run: 1181 times
+ task:4 Average reading and writing time is 0 MilliSeconds. run: 1178 times
+ task:5 Average reading and writing time is 0 MilliSeconds. run: 1646 times
+ when 4 threads run in parallel:6363 times read and write succeed.
+ when 5 threads run in parallel:
+ task:1 Average reading and writing time is 0 MilliSeconds. run: 1075 times
+ task:2 Average reading and writing time is 0 MilliSeconds. run: 1075 times
+ task:3 Average reading and writing time is 0 MilliSeconds. run: 1080 times
+ task:4 Average reading and writing time is 0 MilliSeconds. run: 1080 times
+ task:5 Average reading and writing time is 0 MilliSeconds. run: 1076 times
+ when 5 threads run in parallel:5386 times read and write succeed.
  

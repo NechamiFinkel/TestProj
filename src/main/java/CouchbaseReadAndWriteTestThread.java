@@ -39,7 +39,7 @@ public class CouchbaseReadAndWriteTestThread implements Runnable {
      */
     public void run() {
         long start = System.currentTimeMillis();
-        long end = start + 15000;
+        long end = start + 1000;
         long lastOperationTime = System.currentTimeMillis();
         while (System.currentTimeMillis() < end) {
             String content = readJsonFile();

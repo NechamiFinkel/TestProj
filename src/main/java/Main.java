@@ -15,6 +15,7 @@ public class Main {
         FileWriter myWriter = ReportFileUtils.getFileWriter();
         Collection collection = CouchbaseConnection.connect();
 
+        //call to executeThreadTest with 5 options of thread pool size
         for (int i = 1; i < 6; i++) {
             executeThreadTest(i, collection, myWriter);
         }
@@ -69,8 +70,8 @@ public class Main {
      * @param runningEfficiencyDataMap
      */
     public static void writeBenchmarkReport(int numberOfThreads, FileWriter myWriter, Map<Long, List<Integer>> runningEfficiencyDataMap) {
-        ReportFileUtils.writeToFile("when " + numberOfThreads + " threads run concurrency:", myWriter);
-
+        ReportFileUtils.writeToFile("when " + numberOfThreads + " threads run in parallel:", myWriter);
+        int sizeOfRuns = 0;
         for (Map.Entry<Long, List<Integer>> mapElement : runningEfficiencyDataMap.entrySet()) {
             Long task = mapElement.getKey();
             List<Integer> runningTimeDataList = mapElement.getValue();
@@ -78,10 +79,13 @@ public class Main {
             for (Integer runningTimeData : runningTimeDataList) {
                 time += runningTimeData;
             }
+            sizeOfRuns += runningTimeDataList.size();
             int average = time / runningTimeDataList.size();
-            ReportFileUtils.writeToFile("task:" + task + " read and write on average in " + average + " MilliSeconds. succeed to run: " + runningTimeDataList.size() + " times", myWriter);
+            ReportFileUtils.writeToFile("task:" + task + " Average reading and writing time is " + average + " MilliSeconds. run: " + runningTimeDataList.size() + " times", myWriter);
 
         }
+        ReportFileUtils.writeToFile("when " + numberOfThreads + " threads run in parallel:" + sizeOfRuns + " times read and write succeed.", myWriter);
+
     }
 
 
