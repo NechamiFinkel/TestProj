@@ -1,36 +1,76 @@
 when 1 threads run in parallel:
- task:1 Average reading and writing time is 1 MilliSeconds. run: 685 times
- task:2 Average reading and writing time is 1 MilliSeconds. run: 967 times
- task:3 Average reading and writing time is 0 MilliSeconds. run: 1037 times
- task:4 Average reading and writing time is 0 MilliSeconds. run: 1022 times
- task:5 Average reading and writing time is 0 MilliSeconds. run: 1316 times
- when 1 threads run in parallel:5027 times read and write succeed.
+    Total running time is 5001 milliseconds
+    Total number of executions in all threads: 5813
+    Average duration of writing is 0.01703079305006021 milliseconds.
+    Minimum duration of writing is 0 milliseconds.
+    Maximum duration of writing is 14 milliseconds.
+    Average duration of reading 1st time is 6.881128505074832E-4 milliseconds.
+    Minimum duration of reading 1st time is 0 milliseconds.
+    Maximum duration of reading 1st time is 3 milliseconds.
+    Average duration of reading 2nd time is 8.60141063134354E-4 milliseconds.
+    Minimum duration of reading 2nd time is 0 milliseconds.
+    Maximum duration of reading 2nd time is 4 milliseconds.
+    Average duration of reading 3rd time is 8.60141063134354E-4 milliseconds.
+    Minimum duration of reading 3rd time is 0 milliseconds.
+    Maximum duration of reading 3rd time is 2 milliseconds.
  when 2 threads run in parallel:
- task:1 Average reading and writing time is 0 MilliSeconds. run: 1126 times
- task:2 Average reading and writing time is 0 MilliSeconds. run: 1126 times
- task:3 Average reading and writing time is 0 MilliSeconds. run: 1279 times
- task:4 Average reading and writing time is 0 MilliSeconds. run: 1279 times
- task:5 Average reading and writing time is 0 MilliSeconds. run: 1545 times
- when 2 threads run in parallel:6355 times read and write succeed.
+    Total running time is 2999 milliseconds
+    Total number of executions in all threads: 6067
+    Average duration of writing is 0.0021427394099225315 milliseconds.
+    Minimum duration of writing is 0 milliseconds.
+    Maximum duration of writing is 4 milliseconds.
+    Average duration of reading 1st time is 0.0 milliseconds.
+    Minimum duration of reading 1st time is 0 milliseconds.
+    Maximum duration of reading 1st time is 0 milliseconds.
+    Average duration of reading 2nd time is 0.0 milliseconds.
+    Minimum duration of reading 2nd time is 0 milliseconds.
+    Maximum duration of reading 2nd time is 0 milliseconds.
+    Average duration of reading 3rd time is 1.6482610845557937E-4 milliseconds.
+    Minimum duration of reading 3rd time is 0 milliseconds.
+    Maximum duration of reading 3rd time is 1 milliseconds.
  when 3 threads run in parallel:
- task:1 Average reading and writing time is 0 MilliSeconds. run: 1185 times
- task:2 Average reading and writing time is 0 MilliSeconds. run: 1183 times
- task:3 Average reading and writing time is 0 MilliSeconds. run: 1183 times
- task:4 Average reading and writing time is 0 MilliSeconds. run: 1216 times
- task:5 Average reading and writing time is 0 MilliSeconds. run: 1215 times
- when 3 threads run in parallel:5982 times read and write succeed.
+    Total running time is 2001 milliseconds
+    Total number of executions in all threads: 6034
+    Average duration of writing is 0.004308916141862778 milliseconds.
+    Minimum duration of writing is 0 milliseconds.
+    Maximum duration of writing is 3 milliseconds.
+    Average duration of reading 1st time is 1.6572754391779913E-4 milliseconds.
+    Minimum duration of reading 1st time is 0 milliseconds.
+    Maximum duration of reading 1st time is 1 milliseconds.
+    Average duration of reading 2nd time is 1.6572754391779913E-4 milliseconds.
+    Minimum duration of reading 2nd time is 0 milliseconds.
+    Maximum duration of reading 2nd time is 1 milliseconds.
+    Average duration of reading 3rd time is 1.6572754391779913E-4 milliseconds.
+    Minimum duration of reading 3rd time is 0 milliseconds.
+    Maximum duration of reading 3rd time is 1 milliseconds.
  when 4 threads run in parallel:
- task:1 Average reading and writing time is 0 MilliSeconds. run: 1177 times
- task:2 Average reading and writing time is 0 MilliSeconds. run: 1181 times
- task:3 Average reading and writing time is 0 MilliSeconds. run: 1181 times
- task:4 Average reading and writing time is 0 MilliSeconds. run: 1178 times
- task:5 Average reading and writing time is 0 MilliSeconds. run: 1646 times
- when 4 threads run in parallel:6363 times read and write succeed.
+    Total running time is 2000 milliseconds
+    Total number of executions in all threads: 5197
+    Average duration of writing is 0.010967866076582644 milliseconds.
+    Minimum duration of writing is 0 milliseconds.
+    Maximum duration of writing is 5 milliseconds.
+    Average duration of reading 1st time is 7.696748123917645E-4 milliseconds.
+    Minimum duration of reading 1st time is 0 milliseconds.
+    Maximum duration of reading 1st time is 2 milliseconds.
+    Average duration of reading 2nd time is 7.696748123917645E-4 milliseconds.
+    Minimum duration of reading 2nd time is 0 milliseconds.
+    Maximum duration of reading 2nd time is 1 milliseconds.
+    Average duration of reading 3rd time is 0.007504329420819703 milliseconds.
+    Minimum duration of reading 3rd time is 0 milliseconds.
+    Maximum duration of reading 3rd time is 8 milliseconds.
  when 5 threads run in parallel:
- task:1 Average reading and writing time is 0 MilliSeconds. run: 1075 times
- task:2 Average reading and writing time is 0 MilliSeconds. run: 1075 times
- task:3 Average reading and writing time is 0 MilliSeconds. run: 1080 times
- task:4 Average reading and writing time is 0 MilliSeconds. run: 1080 times
- task:5 Average reading and writing time is 0 MilliSeconds. run: 1076 times
- when 5 threads run in parallel:5386 times read and write succeed.
+    Total running time is 1001 milliseconds
+    Total number of executions in all threads: 5091
+    Average duration of writing is 9.821253191907287E-4 milliseconds.
+    Minimum duration of writing is 0 milliseconds.
+    Maximum duration of writing is 2 milliseconds.
+    Average duration of reading 1st time is 0.0 milliseconds.
+    Minimum duration of reading 1st time is 0 milliseconds.
+    Maximum duration of reading 1st time is 0 milliseconds.
+    Average duration of reading 2nd time is 0.0 milliseconds.
+    Minimum duration of reading 2nd time is 0 milliseconds.
+    Maximum duration of reading 2nd time is 0 milliseconds.
+    Average duration of reading 3rd time is 0.0019642506383814574 milliseconds.
+    Minimum duration of reading 3rd time is 0 milliseconds.
+    Maximum duration of reading 3rd time is 2 milliseconds.
  

@@ -1,9 +1,9 @@
 
 
-import com.couchbase.client.core.deps.com.fasterxml.jackson.databind.JsonNode;
 import com.couchbase.client.java.*;
 import com.couchbase.client.java.codec.RawJsonTranscoder;
 import com.couchbase.client.java.kv.*;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -13,19 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 public class CouchbaseReadAndWriteTestThread implements Runnable {
     // Update these variables to point to your Couchbase Server instance and credentials.
 
     Collection collection;
+    List<PerformanceResults> performanceResultsList;
 
-    Long task;
-    Map<Long,List<Integer>> runningTimeDataMap;
-
-    public CouchbaseReadAndWriteTestThread(Collection collection, Long task, Map<Long,List<Integer>> runningTimeDataMap){
+    public CouchbaseReadAndWriteTestThread(Collection collection, List<PerformanceResults> performanceResultsList) {
         super();
         this.collection = collection;
-        this.runningTimeDataMap = runningTimeDataMap;
-        this.task = task;
+        this.performanceResultsList = performanceResultsList;
     }
 
 
@@ -40,29 +38,38 @@ public class CouchbaseReadAndWriteTestThread implements Runnable {
     public void run() {
         long start = System.currentTimeMillis();
         long end = start + 1000;
-        long lastOperationTime = System.currentTimeMillis();
+
         while (System.currentTimeMillis() < end) {
-            String content = readJsonFile();
-            collection.upsert("key", content,
-                    UpsertOptions.upsertOptions().transcoder(RawJsonTranscoder.INSTANCE));
-            for (int i = 0; i < 3; i++) {
-                GetResult result = collection.get("key");
-                JsonNode node = result.contentAs(JsonNode.class);
+            PerformanceResults performanceResults = new PerformanceResults();
+            calcPerformanceOfWrite(performanceResults);
+            for (int i = 1; i <= 3; i++) {
+                calcPerformanceOfRead(performanceResults, i);
             }
-            Integer runningTimeData = Math.toIntExact(System.currentTimeMillis() - lastOperationTime);
-            lastOperationTime = System.currentTimeMillis();
-            synchronized(runningTimeDataMap)
-            {
-                if (!runningTimeDataMap.containsKey(task)){
-                    runningTimeDataMap.put(task,new ArrayList<Integer>());
-                }
-                runningTimeDataMap.get(task).add(runningTimeData);
+
+            synchronized (performanceResultsList) {
+                performanceResultsList.add(performanceResults);
             }
         }
     }
 
+    private void calcPerformanceOfWrite(PerformanceResults performanceResults) {
+        StopWatch stopwatch = StopWatch.createStarted();
+        String content = readJsonFile();
+        collection.upsert("key", content,
+                UpsertOptions.upsertOptions().transcoder(RawJsonTranscoder.INSTANCE));
+        stopwatch.stop();
+        performanceResults.setTimeOfWrite(stopwatch.getTime());
+    }
+
+    private void calcPerformanceOfRead(PerformanceResults performanceResults, int i) {
+        StopWatch stopwatch = StopWatch.createStarted();
+        GetResult result = collection.get("key");
+        stopwatch.stop();
+        performanceResults.setTimeOfRead(i, stopwatch.getTime());
+    }
+
     private static String readJsonFile() {
-        String content  = null;
+        String content = null;
         try {
             String fileName = "jsonFile.json";
             content = new String(

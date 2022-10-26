@@ -1,6 +1,8 @@
 import com.couchbase.client.java.*;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,15 +14,19 @@ public class Main {
 
 
     public static void main(String[] args) {
-        FileWriter myWriter = ReportFileUtils.getFileWriter();
-        Collection collection = CouchbaseConnection.connect();
+        try {
+            FileWriter myWriter = ReportFileUtils.getFileWriter();
+            Collection collection = CouchbaseConnection.connect();
 
-        //call to executeThreadTest with 5 options of thread pool size
-        for (int i = 1; i < 6; i++) {
-            executeThreadTest(i, collection, myWriter);
+            //call to executeThreadTest with 5 options of thread pool size
+            for (int i = 1; i < 6; i++) {
+                executeThreadTest(i, collection, myWriter);
+            }
+            CouchbaseConnection.closeConnection();
+            ReportFileUtils.closeWriter(myWriter);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        CouchbaseConnection.closeConnection();
-        ReportFileUtils.closeWriter(myWriter);
     }
 
     /**
@@ -33,23 +39,13 @@ public class Main {
      * @param myWriter
      */
     private static void executeThreadTest(int numberOfThreads, Collection collection, FileWriter myWriter) {
-
-        Map<Long, List<Integer>> runningTimeDataMap = new HashMap<>();
-        // creates five tasks
-        Runnable r1 = new CouchbaseReadAndWriteTestThread(collection, 1L, runningTimeDataMap);
-        Runnable r2 = new CouchbaseReadAndWriteTestThread(collection, 2L, runningTimeDataMap);
-        Runnable r3 = new CouchbaseReadAndWriteTestThread(collection, 3L, runningTimeDataMap);
-        Runnable r4 = new CouchbaseReadAndWriteTestThread(collection, 4L, runningTimeDataMap);
-        Runnable r5 = new CouchbaseReadAndWriteTestThread(collection, 5L, runningTimeDataMap);
-
+        StopWatch stopwatch = StopWatch.createStarted();
+        List<PerformanceResults> performanceResultsList = new ArrayList<>();
         ExecutorService pool = Executors.newFixedThreadPool(numberOfThreads);
-        pool.execute(r1);
-        pool.execute(r2);
-        pool.execute(r3);
-        pool.execute(r4);
-        pool.execute(r5);
-
-        // pool shutdown ( Step 4)
+        for (int i = 0; i < 5; i++) {
+            Runnable r = new CouchbaseReadAndWriteTestThread(collection, performanceResultsList);
+            pool.execute(r);
+        }
         pool.shutdown();
 
         try {
@@ -57,8 +53,8 @@ public class Main {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        writeBenchmarkReport(numberOfThreads, myWriter, runningTimeDataMap);
+        stopwatch.stop();
+        writeBenchmarkReport(numberOfThreads, myWriter, performanceResultsList, stopwatch.getTime());
 
     }
 
@@ -67,25 +63,40 @@ public class Main {
      * relevant metrics for this benchmark, and write it on report file.
      * @param numberOfThreads
      * @param myWriter
-     * @param runningEfficiencyDataMap
+     *
      */
-    public static void writeBenchmarkReport(int numberOfThreads, FileWriter myWriter, Map<Long, List<Integer>> runningEfficiencyDataMap) {
+    public static void writeBenchmarkReport(int numberOfThreads, FileWriter myWriter, List<PerformanceResults> performanceResultsList, Long overallRunningTime) {
         ReportFileUtils.writeToFile("when " + numberOfThreads + " threads run in parallel:", myWriter);
-        int sizeOfRuns = 0;
-        for (Map.Entry<Long, List<Integer>> mapElement : runningEfficiencyDataMap.entrySet()) {
-            Long task = mapElement.getKey();
-            List<Integer> runningTimeDataList = mapElement.getValue();
-            int time = 0;
-            for (Integer runningTimeData : runningTimeDataList) {
-                time += runningTimeData;
+        ReportFileUtils.writeToFile("   Total running time is " + overallRunningTime +" milliseconds", myWriter);
+        ReportFileUtils.writeToFile("   Total number of executions in all threads: "+performanceResultsList.size(), myWriter);
+
+        List<ReportDataRow> reportDataRowList = new ArrayList<>();
+        reportDataRowList.add(new ReportDataRow("write"));
+        reportDataRowList.add(new ReportDataRow("read1"));
+        reportDataRowList.add(new ReportDataRow("read2"));
+        reportDataRowList.add(new ReportDataRow("read3"));
+
+        for (PerformanceResults performanceResults : performanceResultsList) {
+            for (ReportDataRow reportDataRow : reportDataRowList) {
+                fillDataInReportRow(reportDataRow, performanceResults);
             }
-            sizeOfRuns += runningTimeDataList.size();
-            int average = time / runningTimeDataList.size();
-            ReportFileUtils.writeToFile("task:" + task + " Average reading and writing time is " + average + " MilliSeconds. run: " + runningTimeDataList.size() + " times", myWriter);
-
         }
-        ReportFileUtils.writeToFile("when " + numberOfThreads + " threads run in parallel:" + sizeOfRuns + " times read and write succeed.", myWriter);
+        for (ReportDataRow reportDataRow : reportDataRowList) {
+            ReportFileUtils.writeToFile("   Average duration of " +reportDataRow.getMessage()+ " is " + (double)reportDataRow.getSum()/performanceResultsList.size() +" milliseconds." , myWriter);
+            ReportFileUtils.writeToFile("   Minimum duration of " +reportDataRow.getMessage()+ " is " + reportDataRow.getMinimum() +" milliseconds." , myWriter);
+            ReportFileUtils.writeToFile("   Maximum duration of " +reportDataRow.getMessage()+ " is " + reportDataRow.getMaximum() +" milliseconds." , myWriter);
+        }
 
+    }
+
+    private static void fillDataInReportRow(ReportDataRow reportDataRow, PerformanceResults performanceResults) {
+        Long timeOfRow = performanceResults.getTimeOf(reportDataRow.getDescription());
+        if (timeOfRow < reportDataRow.getMinimum())
+            reportDataRow.setMinimum(timeOfRow);
+        if (timeOfRow > reportDataRow.getMaximum())
+            reportDataRow.setMaximum(timeOfRow);
+
+        reportDataRow.setSum(reportDataRow.getSum()+ timeOfRow);
     }
 
 
