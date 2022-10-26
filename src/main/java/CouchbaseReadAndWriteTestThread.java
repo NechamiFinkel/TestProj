@@ -15,8 +15,6 @@ import java.util.Map;
 
 
 public class CouchbaseReadAndWriteTestThread implements Runnable {
-    // Update these variables to point to your Couchbase Server instance and credentials.
-
     Collection collection;
     List<PerformanceResults> performanceResultsList;
 
@@ -29,11 +27,9 @@ public class CouchbaseReadAndWriteTestThread implements Runnable {
 
     /**
      * method is working for 3 minutes:
-     * method call couchbase:
-     * 1. read from json file
-     * 2. write it to couchbase
-     * 3. read this key from couchbase 3 times.
-     * 4. Writes the duration of the run time on map.
+     * 1. read from json file and write it to couchbase - save the time duration
+     * 3. read this key from couchbase 3 times -save the time duration.
+     * 4. Writes the results in performanceResultsList.
      */
     public void run() {
         long start = System.currentTimeMillis();
@@ -52,6 +48,11 @@ public class CouchbaseReadAndWriteTestThread implements Runnable {
         }
     }
 
+    /**
+     * method read json file,
+     * write it to couchbase and save the performance results.
+     * @param performanceResults
+     */
     private void calcPerformanceOfWrite(PerformanceResults performanceResults) {
         StopWatch stopwatch = StopWatch.createStarted();
         String content = readJsonFile();
@@ -61,6 +62,11 @@ public class CouchbaseReadAndWriteTestThread implements Runnable {
         performanceResults.setTimeOfWrite(stopwatch.getTime());
     }
 
+    /**
+     * method read from couchbase by key and save the performance results.
+     * @param performanceResults
+     * @param i
+     */
     private void calcPerformanceOfRead(PerformanceResults performanceResults, int i) {
         StopWatch stopwatch = StopWatch.createStarted();
         GetResult result = collection.get("key");

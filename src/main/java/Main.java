@@ -15,7 +15,9 @@ public class Main {
 
     public static void main(String[] args) {
         try {
+            //open file writer
             FileWriter myWriter = ReportFileUtils.getFileWriter();
+            //open connection to couchbase
             Collection collection = CouchbaseConnection.connect();
 
             //call to executeThreadTest with 5 options of thread pool size
@@ -31,9 +33,9 @@ public class Main {
 
     /**
      * method execute 5 Threads in parallel based on numberOfThreads.
-     * each thread run for 3 minutes: read and write to couchbase and save
-     * the efficiency of DB access.
-     * after all threads finished: write a benchmark Report.
+     * each thread run for 3 minutes: read and write to couchbase
+     * and save the performance results.
+     * after all threads are finished: write a benchmark Report.
      * @param numberOfThreads
      * @param collection
      * @param myWriter
@@ -48,6 +50,7 @@ public class Main {
         }
         pool.shutdown();
 
+        //wait until all threads will finish
         try {
             pool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         } catch (InterruptedException e) {
@@ -55,19 +58,18 @@ public class Main {
         }
         stopwatch.stop();
         writeBenchmarkReport(numberOfThreads, myWriter, performanceResultsList, stopwatch.getTime());
-
     }
 
     /**
-     * method move over thread data and calculate
-     * relevant metrics for this benchmark, and write it on report file.
+     * method move over data inserted from threads and calculate
+     * relevant metrics for this benchmark, write it on report file.
      * @param numberOfThreads
      * @param myWriter
-     *
+     * @param totalRunningTime - how long take to run all threads
      */
-    public static void writeBenchmarkReport(int numberOfThreads, FileWriter myWriter, List<PerformanceResults> performanceResultsList, Long overallRunningTime) {
+    public static void writeBenchmarkReport(int numberOfThreads, FileWriter myWriter, List<PerformanceResults> performanceResultsList, Long totalRunningTime) {
         ReportFileUtils.writeToFile("when " + numberOfThreads + " threads run in parallel:", myWriter);
-        ReportFileUtils.writeToFile("   Total running time is " + overallRunningTime +" milliseconds", myWriter);
+        ReportFileUtils.writeToFile("   Total running time is " + totalRunningTime +" milliseconds", myWriter);
         ReportFileUtils.writeToFile("   Total number of executions in all threads: "+performanceResultsList.size(), myWriter);
 
         List<ReportDataRow> reportDataRowList = new ArrayList<>();

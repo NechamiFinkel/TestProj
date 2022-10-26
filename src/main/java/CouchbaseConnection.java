@@ -15,7 +15,7 @@ public class CouchbaseConnection {
 
     /**
      * method connect to test couchbase
-     * @return default collection connection
+     * @return default collection
      */
     public static Collection connect(){
         ClusterEnvironment env = ClusterEnvironment.builder()
