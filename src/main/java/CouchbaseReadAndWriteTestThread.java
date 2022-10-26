@@ -9,9 +9,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 
 public class CouchbaseReadAndWriteTestThread implements Runnable {
@@ -33,7 +32,7 @@ public class CouchbaseReadAndWriteTestThread implements Runnable {
      */
     public void run() {
         long start = System.currentTimeMillis();
-        long end = start + 1000;
+        long end = start + 180000;
 
         while (System.currentTimeMillis() < end) {
             PerformanceResults performanceResults = new PerformanceResults();
